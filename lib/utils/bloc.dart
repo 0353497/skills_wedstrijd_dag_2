@@ -27,7 +27,8 @@ class Bloc {
   void sedIndexQuestion(int index) {
     _currentIndexStream.add(index);
   }
-    static final BehaviorSubject<int> _currentCurrentScoreStream = BehaviorSubject<int>.seeded(0);
+  
+  static final BehaviorSubject<int> _currentCurrentScoreStream = BehaviorSubject<int>.seeded(0);
   final Stream<int> CurrentCurrentScoreStream = _currentCurrentScoreStream.stream;
 
   final int GetCurrentScoreQuestion = _currentCurrentScoreStream.value;
@@ -35,6 +36,23 @@ class Bloc {
   void setCurrentScoreQuestion(int index) {
     _currentCurrentScoreStream.add(index);
   }
+
+  
+  static final BehaviorSubject<int> _timeStreamInSeconds = BehaviorSubject<int>.seeded(0);
+  
+  final Stream<int> timeStreamInSeconds = _timeStreamInSeconds.stream;
+
+  final int GetTimeInSeconds= _timeStreamInSeconds.value;
+
+  void setTimeInSeconds(int seconds) {
+    _timeStreamInSeconds.add(seconds);
+  }
+  void CloseTime(){
+    _timeStreamInSeconds.close();
+  }
+
+
+
   
   
 

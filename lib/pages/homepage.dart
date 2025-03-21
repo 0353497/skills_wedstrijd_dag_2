@@ -9,12 +9,13 @@ class Homepage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Color.fromARGB(255, 90, 66, 131),
         foregroundColor: Colors.white,
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> Scorepage()));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> Scorepage(fromQuiz: false,)));
             },
           icon: Icon(Icons.leaderboard_outlined))
         ],

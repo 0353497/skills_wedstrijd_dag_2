@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:skills_wedstrijd_dag_2/components/timer.dart';
 import 'package:skills_wedstrijd_dag_2/models/question.dart';
 import 'package:skills_wedstrijd_dag_2/pages/homepage.dart';
 import 'package:skills_wedstrijd_dag_2/pages/scorepage.dart';
@@ -17,8 +18,7 @@ class Quizpage extends StatefulWidget {
 class _QuizpageState extends State<Quizpage> {
   late List<Vraag> lijstVragen;
   int score = 0;
-  int CurrentIndex =0 ;
-
+  int CurrentIndex = 0;
   int? indexFout = null;
   bool IsWaiting = false;
   int indexgoed = 0;
@@ -37,16 +37,17 @@ class _QuizpageState extends State<Quizpage> {
   @override
   void initState() {
     super.initState();
+    _bloc.sedIndexQuestion(CurrentIndex);
     _getVragen();
   }
 
   void nextQuestion() {
     if (lijstVragen.isNotEmpty) {
       _bloc.sedCurrentQuestion(lijstVragen[CurrentIndex]);
-      if (CurrentIndex == 4) {
+      if (CurrentIndex == 5) {
         CurrentIndex = 0;
       _bloc.sedIndexQuestion(CurrentIndex);
-     // Navigator.push(context, MaterialPageRoute(builder: (context) => Scorepage()));
+     Navigator.push(context, MaterialPageRoute(builder: (context) => Scorepage(fromQuiz: true,)));
       } else {
       CurrentIndex++;
       _bloc.sedIndexQuestion(CurrentIndex);
@@ -97,7 +98,7 @@ class _QuizpageState extends State<Quizpage> {
                 StreamBuilder<Object>(
                   stream: _bloc.CurrentIndexStream,
                   builder: (context, snapshot) {
-                    final int value  = int.parse(snapshot.data.toString()) + 1;
+                    final int value  = int.parse(snapshot.data.toString());
                     return Text("vraag $value/5",
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
@@ -149,11 +150,7 @@ class _QuizpageState extends State<Quizpage> {
                     }
                   ),
                 ),
-                Text("0:02",
-                 style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 24,
-                ),),
+                TimerWidget()
               ],
             ),
           )

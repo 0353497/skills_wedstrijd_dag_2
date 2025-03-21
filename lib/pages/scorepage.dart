@@ -3,13 +3,32 @@ import 'package:skills_wedstrijd_dag_2/pages/homepage.dart';
 import 'package:skills_wedstrijd_dag_2/pages/quizpage.dart';
 
 class Scorepage extends StatefulWidget {
-  const Scorepage({super.key});
+  final bool fromQuiz;
+  const Scorepage({super.key, this.fromQuiz = false});
 
   @override
   State<Scorepage> createState() => _ScorepageState();
 }
 
 class _ScorepageState extends State<Scorepage> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.fromQuiz) {
+      _showModal();
+    }
+  }
+  _showModal() {
+    showDialog(context: context, builder: (context) {
+      return Card(
+        child: Text("is van de quiz"),
+      );
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
