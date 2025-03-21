@@ -1,0 +1,64 @@
+{
+  "quizvragen": [
+    {
+      "vraag": "Wat is de meest voorkomende vogel ter wereld?",
+      "foto": "images/veertje.jpeg",
+      "antwoorden": ["De merel", "De duif", "De meeuw", "De kip"],
+      "goed_antwoord": "De kip"
+    },
+    {
+      "vraag": "In welk land is de koe een heilig dier?",
+      "foto": "images/koe.jpeg",
+      "antwoorden": ["Turkije", "India", "China", "Argentinië"],
+      "goed_antwoord": "India"
+    },
+    {
+      "vraag": "Hoe lopen de strepen op de poten van een zebra?",
+      "foto": "images/zebra.jpeg",
+      "antwoorden": ["Horizontaal", "Verticaal"],
+      "goed_antwoord": "Horizontaal"
+    },
+    {
+      "vraag": "Waarmee proeven vlinders?",
+      "foto": "images/vlinder.jpeg",
+      "antwoorden": ["Met hun tong", "Met hun vleugels", "Met hun poten", "Met hun voelsprieten"],
+      "goed_antwoord": "Met hun poten"
+    },
+    {
+      "vraag": "Wanneer is het dierendag?",
+      "foto": "images/kalender.jpeg",
+      "antwoorden": ["1 juli", "2 augustus", "3 september", "4 oktober"],
+      "goed_antwoord": "4 oktober"
+    },
+    {
+      "vraag": "Hoeveel poten heeft een spin?",
+      "foto": "images/spin.jpeg",
+      "antwoorden": ["6", "8", "10", "12"],
+      "goed_antwoord": "8"
+    },
+    {
+      "vraag": "Wat eet een koala voornamelijk?",
+      "foto": "images/koala.jpeg",
+      "antwoorden": ["Bamboe", "Eucalyptusbladeren", "Gras", "Noten"],
+      "goed_antwoord": "Eucalyptusbladeren"
+    },
+    {
+      "vraag": "Welk dier heeft de sterkste beet ter wereld?",
+      "foto": "images/tand.jpeg",
+      "antwoorden": ["Leeuw", "Haai", "Krokodil", "Beer"],
+      "goed_antwoord": "Krokodil"
+    },
+    {
+      "vraag": "Wat is het snelste landdier?",
+      "foto": "images/snel.jpeg",
+      "antwoorden": ["Cheeta", "Leeuw", "Antilope", "Paard"],
+      "goed_antwoord": "Cheeta"
+    },
+    {
+      "vraag": "Welk dier kan het langst zonder water?",
+      "foto": "images/water.jpeg",
+      "antwoorden": ["Kameel", "Schildpad"],
+      "goed_antwoord": "Kameel"
+    }
+  ]
+}
