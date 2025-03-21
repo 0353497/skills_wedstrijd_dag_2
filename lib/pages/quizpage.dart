@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:skills_wedstrijd_dag_2/models/question.dart';
 import 'package:skills_wedstrijd_dag_2/pages/homepage.dart';
@@ -13,6 +15,7 @@ class Quizpage extends StatefulWidget {
 
 class _QuizpageState extends State<Quizpage> {
   late List<Vraag> lijstVragen;
+  int score = 0;
   int CurrentIndex =0 ;
   _getVragen() async{
     Map<String, dynamic> json = await JsonService.Readquestions("assets/quizvragen.json");
@@ -35,12 +38,21 @@ class _QuizpageState extends State<Quizpage> {
   void nextQuestion() {
     if (lijstVragen.isNotEmpty) {
       _bloc.sedCurrentQuestion(lijstVragen[CurrentIndex]);
+      if (CurrentIndex == 4) {
+        CurrentIndex = 0;
+      _bloc.sedIndexQuestion(CurrentIndex);
+      } else {
       CurrentIndex++;
+      _bloc.sedIndexQuestion(CurrentIndex);
+      }
     }
   }
   void CheckQuestion(String antwoord) {
+    print(" $antwoord is ${lijstVragen[CurrentIndex].goed_antwoord}");
     if (antwoord == _bloc.GetCurrentQuestion.goed_antwoord) {
       print("correct");
+      score += 20;
+      _bloc.setCurrentScoreQuestion(score);
     } else {
       print("incorrect!");
     }
@@ -74,26 +86,48 @@ class _QuizpageState extends State<Quizpage> {
                   fontSize: 24,
                 ),
                 ),
-                SizedBox(
-                  width: 300,
-                  child: LinearProgressIndicator(
-                    borderRadius: BorderRadius.circular(16),
-                    minHeight: 25,
-                    backgroundColor: const Color.fromARGB(90, 0, 0, 0),
-                    value: 0.2,
-                    color: Colors.amber,
-                  ),
+                StreamBuilder<Object>(
+                  stream: _bloc.CurrentIndexStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {} 
+                    final int value  = int.parse(snapshot.data.toString());
+                    return SizedBox(
+                      width: 300,
+                      child: LinearProgressIndicator(
+                        borderRadius: BorderRadius.circular(16),
+                        minHeight: 25,
+                        backgroundColor: const Color.fromARGB(90, 0, 0, 0),
+                        value:  (value / 5),
+                        color: Colors.amber,
+                      ),
+                    );
+                  }
                 ),
                 ElevatedButton(
                   onPressed: null,
                   style: ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(const Color.fromARGB(90, 0, 0, 0)),
                   ),
-                  child: Text('score',
-                  style: TextStyle(
-                    color: Colors.white
-                  ), 
-                ),
+                  child: StreamBuilder<int>(
+                    stream: _bloc.CurrentCurrentScoreStream,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done) {
+                      final int value = int.parse(snapshot.data.toString());
+                      return Text('$value',
+                        style: TextStyle(
+                          color: Colors.white
+                        ), 
+                      );
+                      } else {
+                        return Text("score",
+                          style: TextStyle(
+                          color: Colors.white
+                        ), 
+                        );
+                      }
+                    
+                    }
+                  ),
                 ),
                 Text("0:02",
                  style: TextStyle(
@@ -175,7 +209,11 @@ class _QuizpageState extends State<Quizpage> {
     );
   }
 
-  Expanded OptionButton(AsyncSnapshot<Vraag> snapshot, int index) {
+  Widget OptionButton(AsyncSnapshot<Vraag> snapshot, int index) {
+    if (snapshot.data!.antwoorden.length <= index) {
+      return SizedBox();
+    }
+
     return Expanded(
               flex: 1,
               child: Container(

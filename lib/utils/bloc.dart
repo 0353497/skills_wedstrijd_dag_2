@@ -17,9 +17,25 @@ class Bloc {
   final GetCurrentQuestion = _subject.value;
 
   void sedCurrentQuestion(Vraag vraag) {
-    print(vraag);
     _subject.add(vraag);
-    print(" value ${_subject.value.vraag}");
   }
+  static final BehaviorSubject<int> _currentIndexStream = BehaviorSubject<int>.seeded(0);
+  final Stream<int> CurrentIndexStream = _currentIndexStream.stream;
+
+  final int GetIndexQuestion = _currentIndexStream.value;
+
+  void sedIndexQuestion(int index) {
+    _currentIndexStream.add(index);
+  }
+    static final BehaviorSubject<int> _currentCurrentScoreStream = BehaviorSubject<int>.seeded(0);
+  final Stream<int> CurrentCurrentScoreStream = _currentCurrentScoreStream.stream;
+
+  final int GetCurrentScoreQuestion = _currentCurrentScoreStream.value;
+
+  void setCurrentScoreQuestion(int index) {
+    _currentCurrentScoreStream.add(index);
+  }
+  
+  
 
 }
