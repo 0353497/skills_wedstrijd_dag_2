@@ -1,7 +1,10 @@
+import 'package:rxdart/src/streams/value_stream.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:skills_wedstrijd_dag_2/models/question.dart';
+import 'package:skills_wedstrijd_dag_2/models/score.dart';
 
 class Bloc {
+  //singleton
     Bloc._privateConstructor();
 
     static final Bloc _instance = Bloc._privateConstructor();
@@ -10,6 +13,7 @@ class Bloc {
       return _instance;
     }
 
+  //huidige vraag
   static final BehaviorSubject<Vraag> _subject = BehaviorSubject<Vraag>.seeded(Vraag("", "", [], "",));
 
   final CurrentQuestionStream = _subject.stream;
@@ -19,6 +23,8 @@ class Bloc {
   void sedCurrentQuestion(Vraag vraag) {
     _subject.add(vraag);
   }
+
+  //current index
   static final BehaviorSubject<int> _currentIndexStream = BehaviorSubject<int>.seeded(0);
   final Stream<int> CurrentIndexStream = _currentIndexStream.stream;
 
@@ -28,21 +34,22 @@ class Bloc {
     _currentIndexStream.add(index);
   }
   
-  static final BehaviorSubject<int> _currentCurrentScoreStream = BehaviorSubject<int>.seeded(0);
+  //huidige score
+  static final BehaviorSubject<int> _currentCurrentScoreStream = BehaviorSubject<int>();
   final Stream<int> CurrentCurrentScoreStream = _currentCurrentScoreStream.stream;
 
-  final int GetCurrentScoreQuestion = _currentCurrentScoreStream.value;
+   int get GetCurrentScoreQuestion => _currentCurrentScoreStream.value;
 
   void setCurrentScoreQuestion(int index) {
     _currentCurrentScoreStream.add(index);
   }
 
-  
+  //tijdloper
   static final BehaviorSubject<int> _timeStreamInSeconds = BehaviorSubject<int>.seeded(0);
   
   final Stream<int> timeStreamInSeconds = _timeStreamInSeconds.stream;
 
-  final int GetTimeInSeconds= _timeStreamInSeconds.value;
+   int get GetTimeInSeconds => _timeStreamInSeconds.value;
 
   void setTimeInSeconds(int seconds) {
     _timeStreamInSeconds.add(seconds);
@@ -51,9 +58,15 @@ class Bloc {
     _timeStreamInSeconds.close();
   }
 
-
-
+  //scores cache
+  static final BehaviorSubject<List<Score>> _scoreSubject = BehaviorSubject<List<Score>>.seeded([]);
   
-  
+  final ValueStream<List<Score>> GetScoreSubjectStream = _scoreSubject.stream;
+
+  final List<Score> GetScoreSubjectValue = _scoreSubject.value;
+
+  void AddScore(Score score) {
+    _scoreSubject.value.add(score);
+  }
 
 }

@@ -34,6 +34,6 @@ class _TimerWidgetState extends State<TimerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Text("${(watch.elapsed.inSeconds / 60).floor()}:${watch.elapsed.inSeconds % 60}");
+    return Text("${(watch.elapsed.inSeconds / 60).floor()}:${(watch.elapsed.inSeconds % 60)}");
   }
 }

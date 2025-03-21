@@ -22,6 +22,7 @@ class _QuizpageState extends State<Quizpage> {
   int? indexFout = null;
   bool IsWaiting = false;
   int indexgoed = 0;
+
   _getVragen() async{
     Map<String, dynamic> json = await JsonService.Readquestions("assets/quizvragen.json");
     List dynamicVragen = json["quizvragen"];
@@ -47,7 +48,7 @@ class _QuizpageState extends State<Quizpage> {
       if (CurrentIndex == 5) {
         CurrentIndex = 0;
       _bloc.sedIndexQuestion(CurrentIndex);
-     Navigator.push(context, MaterialPageRoute(builder: (context) => Scorepage(fromQuiz: true,)));
+     Navigator.push(context, MaterialPageRoute(builder: (context) => Scorepage(fromQuiz: true, score: _bloc.GetCurrentScoreQuestion, tijdInSeconden: _bloc.GetTimeInSeconds, )));
       } else {
       CurrentIndex++;
       _bloc.sedIndexQuestion(CurrentIndex);
@@ -146,7 +147,6 @@ class _QuizpageState extends State<Quizpage> {
                         ), 
                         );
                       }
-                    
                     }
                   ),
                 ),
@@ -237,20 +237,20 @@ class _QuizpageState extends State<Quizpage> {
       buttonColor = Colors.green;
     } 
     return Expanded(
-              flex: 1,
-              child: Container(
-                height: 70,
-                child: ElevatedButton(
-                    onPressed: (IsWaiting) ? null : () {
-                      CheckQuestion(snapshot.data!.antwoorden[index], snapshot.data!.goed_antwoord, index);
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: WidgetStatePropertyAll(buttonColor),
-                      foregroundColor: WidgetStatePropertyAll(Colors.white),
-                    ),
-                    child: Text("${snapshot.data!.antwoorden[index]}"),
-                  ),
-                ),
-              );
+    flex: 1,
+    child: Container(
+      height: 70,
+      child: ElevatedButton(
+          onPressed: (IsWaiting) ? null : () {
+            CheckQuestion(snapshot.data!.antwoorden[index], snapshot.data!.goed_antwoord, index);
+          },
+          style: ButtonStyle(
+            backgroundColor: WidgetStatePropertyAll(buttonColor),
+            foregroundColor: WidgetStatePropertyAll(Colors.white),
+          ),
+          child: Text("${snapshot.data!.antwoorden[index]}"),
+        ),
+      ),
+    );
   }
 }
