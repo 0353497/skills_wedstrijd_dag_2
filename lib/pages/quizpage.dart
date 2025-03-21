@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:skills_wedstrijd_dag_2/models/question.dart';
 import 'package:skills_wedstrijd_dag_2/pages/homepage.dart';
+import 'package:skills_wedstrijd_dag_2/pages/scorepage.dart';
 import 'package:skills_wedstrijd_dag_2/utils/bloc.dart';
 import 'package:skills_wedstrijd_dag_2/utils/json.dart';
 
@@ -17,6 +18,10 @@ class _QuizpageState extends State<Quizpage> {
   late List<Vraag> lijstVragen;
   int score = 0;
   int CurrentIndex =0 ;
+
+  int? indexFout = null;
+  bool IsWaiting = false;
+  int indexgoed = 0;
   _getVragen() async{
     Map<String, dynamic> json = await JsonService.Readquestions("assets/quizvragen.json");
     List dynamicVragen = json["quizvragen"];
@@ -41,28 +46,37 @@ class _QuizpageState extends State<Quizpage> {
       if (CurrentIndex == 4) {
         CurrentIndex = 0;
       _bloc.sedIndexQuestion(CurrentIndex);
+     // Navigator.push(context, MaterialPageRoute(builder: (context) => Scorepage()));
       } else {
       CurrentIndex++;
       _bloc.sedIndexQuestion(CurrentIndex);
       }
     }
   }
-  void CheckQuestion(String antwoord) {
-    print(" $antwoord is ${lijstVragen[CurrentIndex].goed_antwoord}");
-    if (antwoord == _bloc.GetCurrentQuestion.goed_antwoord) {
+  void CheckQuestion(String antwoord, String goed_antwoord, int index) async{
+    print("$antwoord $goed_antwoord");
+    setState(() {
+      IsWaiting = true;
+    });
+    if (antwoord == goed_antwoord) {
       print("correct");
       score += 20;
+      indexFout = null;
       _bloc.setCurrentScoreQuestion(score);
     } else {
+      setState(() {
+      indexFout = index;
+      });
       print("incorrect!");
     }
-
+    
+     await Future.delayed(Duration(seconds: 1));
+     setState(() {
+       indexFout = null;
+       IsWaiting= false;
+     });
     nextQuestion();
   }
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -72,19 +86,25 @@ class _QuizpageState extends State<Quizpage> {
         foregroundColor: Colors.white,
         leading: IconButton(onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => Homepage()));
-
         }, icon: Icon(Icons.home_outlined,
+        color: Colors.white,
         size: 32,)),
         actions: [
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text("vraag 1/5",
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 24,
-                ),
+                StreamBuilder<Object>(
+                  stream: _bloc.CurrentIndexStream,
+                  builder: (context, snapshot) {
+                    final int value  = int.parse(snapshot.data.toString()) + 1;
+                    return Text("vraag $value/5",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 24,
+                    ),
+                    );
+                  }
                 ),
                 StreamBuilder<Object>(
                   stream: _bloc.CurrentIndexStream,
@@ -162,7 +182,7 @@ class _QuizpageState extends State<Quizpage> {
                         child: Card(
                           shape: RoundedRectangleBorder(),
                           child: Image.asset(
-                            "assets/vragen_afbeeldingen/kalender.jpeg",
+                            "assets/${snapshot.data!.foto}",
                           height: 100,
                           fit: BoxFit.cover,
                           ),
@@ -213,18 +233,23 @@ class _QuizpageState extends State<Quizpage> {
     if (snapshot.data!.antwoorden.length <= index) {
       return SizedBox();
     }
-
+    Color buttonColor = Color.fromARGB(255, 97, 138, 205);
+    if (indexFout == index) {
+      buttonColor = Colors.redAccent;
+    } else if (IsWaiting && snapshot.data!.antwoorden[index] == snapshot.data!.goed_antwoord) {
+      buttonColor = Colors.green;
+    } 
     return Expanded(
               flex: 1,
               child: Container(
                 height: 70,
                 child: ElevatedButton(
-                    onPressed: () {
-                      CheckQuestion(snapshot.data!.antwoorden[index]);
+                    onPressed: (IsWaiting) ? null : () {
+                      CheckQuestion(snapshot.data!.antwoorden[index], snapshot.data!.goed_antwoord, index);
                     },
                     style: ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll(buttonColor),
                       foregroundColor: WidgetStatePropertyAll(Colors.white),
-                      backgroundColor: WidgetStatePropertyAll(Color.fromARGB(255, 97, 138, 205)),
                     ),
                     child: Text("${snapshot.data!.antwoorden[index]}"),
                   ),

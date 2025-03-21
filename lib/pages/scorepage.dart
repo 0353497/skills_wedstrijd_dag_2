@@ -15,6 +15,7 @@ class _ScorepageState extends State<Scorepage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 90, 66, 131),
+        foregroundColor: Colors.white,
         title: Text("Scorebord"),
         centerTitle: true,
         leading: IconButton(onPressed: () {
@@ -40,15 +41,18 @@ class _ScorepageState extends State<Scorepage> {
           shape: RoundedRectangleBorder(),
           child: ListView(
             children: [
+              for(int i = 0; i < 10; i ++)
               ListTile(
+                tileColor: Colors.grey.shade100,
                 leading: CircleAvatar(
-                  child: Text("1"),
+                  child: Text("$i"),
                 ),
                 title: Text("naam"),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    
+                    ElevatedButton(onPressed: null, child: Text("score")),
+                    Text("0:21"),
                   ],
                 ),
               )

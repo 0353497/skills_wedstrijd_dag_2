@@ -20,5 +20,5 @@ flutter:
   uses-material-design: true
   assets:
   - assets/
-  - assets/vragen_afbeeldingen/
+  - assets/images/
   - assets/iconen/

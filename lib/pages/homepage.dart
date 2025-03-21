@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skills_wedstrijd_dag_2/pages/quizpage.dart';
+import 'package:skills_wedstrijd_dag_2/pages/scorepage.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
@@ -12,13 +13,14 @@ class Homepage extends StatelessWidget {
         foregroundColor: Colors.white,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> Scorepage()));
+            },
           icon: Icon(Icons.leaderboard_outlined))
         ],
       ),
       body: Container(
         color: Color.fromARGB(255, 90, 66, 131),
-        padding: EdgeInsets.all(16),
         child: Row(
           children: [
             Image.asset("assets/dieren_illustratie.png"),
