@@ -14,6 +14,7 @@ class _TimerWidgetState extends State<TimerWidget> {
   final Stopwatch watch = Stopwatch();
   late Timer _timer;
   final Bloc _bloc = Bloc();
+  String seconden = "";
   @override
   void initState() {
     // TODO: implement initState
@@ -21,6 +22,11 @@ class _TimerWidgetState extends State<TimerWidget> {
     watch.start();
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
+        if (watch.elapsed.inSeconds < 10) {
+          seconden = "0${watch.elapsed.inSeconds % 60}";
+        } else {
+          seconden = (watch.elapsed.inSeconds % 60).toString();
+        }
         _bloc.setTimeInSeconds(watch.elapsed.inSeconds);
       });
     });
@@ -34,6 +40,6 @@ class _TimerWidgetState extends State<TimerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Text("${(watch.elapsed.inSeconds / 60).floor()}:${(watch.elapsed.inSeconds % 60)}");
+    return Text("${(watch.elapsed.inSeconds / 60).floor()}:${(seconden)}");
   }
 }

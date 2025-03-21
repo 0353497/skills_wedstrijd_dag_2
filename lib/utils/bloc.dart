@@ -35,7 +35,7 @@ class Bloc {
   }
   
   //huidige score
-  static final BehaviorSubject<int> _currentCurrentScoreStream = BehaviorSubject<int>();
+  static final BehaviorSubject<int> _currentCurrentScoreStream = BehaviorSubject<int>.seeded(0);
   final Stream<int> CurrentCurrentScoreStream = _currentCurrentScoreStream.stream;
 
    int get GetCurrentScoreQuestion => _currentCurrentScoreStream.value;

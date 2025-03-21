@@ -123,29 +123,29 @@ class _ScorepageState extends State<Scorepage> {
               snapshot.data!.sort((a, b) => a.score.compareTo(b.score));
               final list = snapshot.data!;
               list.sort((a, b) => a.score.compareTo(b.score));
-              list.reversed.toList();
+              List<Score> list2 = list.reversed.toList();
               return ListView(
                 children: [
-                  for (int i = 1; i < list.length; i ++)
+                  for (int i = 0; i < list2.length; i ++)
                     ListTile(
                       tileColor: Colors.grey.shade100,
                       leading: CircleAvatar(
-                        backgroundColor: (i == 1) ? Colors.amberAccent : (i==2) ? Colors.grey : (i == 3) ? Colors.brown : Colors.grey.shade100,
-                        child: Text("$i", 
+                        backgroundColor: (i == 0) ? Colors.amberAccent : (i==1) ? Colors.grey : (i == 2) ? Colors.brown : Colors.grey.shade100,
+                        child: Text("${i +1}", 
                         style: TextStyle(
                           color: Colors.black
                         ),
                         ),
                       ),
-                      title: Text("${list[i].naam}"),
+                      title: Text("${list2[i].naam}"),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          ElevatedButton(onPressed: null, child: Text("${list[i].score}")),
+                          ElevatedButton(onPressed: null, child: Text("${list2[i].score}")),
                           SizedBox(
                             width: 10,
                           ),
-                          Text("${((list[i].tijdInSeconden / 60)).floor()}:${list[i].tijdInSeconden % 60}"),
+                          Text("${((list2[i].tijdInSeconden / 60)).floor()}:${list2[i].tijdInSeconden % 60}"),
                         ],
                       ),
                     ),
